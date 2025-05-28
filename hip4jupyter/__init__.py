@@ -1,5 +1,5 @@
 """
-nvcc4jupyter: CUDA C++ plugin for Jupyter Notebook
+hip4jupyter: HIP C++ plugin for Jupyter Notebook
 """
 
 from .parsers import Profiler, set_defaults  # noqa: F401

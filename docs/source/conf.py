@@ -10,11 +10,11 @@ import os
 import sys
 
 sys.path.append(os.path.join("..", ".."))
-from nvcc4jupyter.__init__ import __version__  # noqa: E402
+from hip4jupyter.__init__ import __version__  # noqa: E402
 
-project = "nvcc4jupyter"
-copyright = "2024, Andrei Nechaev & Cosmin Stefan Ciocan"
-author = "Andrei Nechaev & Cosmin Stefan Ciocan"
+project = "hip4jupyter"
+copyright = "2024, Andrei Nechaev & Cosmin Stefan Ciocan. 2025, Fabian Wahlster"
+author = "Andrei Nechaev & Cosmin Stefan Ciocan & Fabian Wahlster"
 release = __version__
 version = __version__
 
