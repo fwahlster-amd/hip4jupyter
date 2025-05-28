@@ -151,7 +151,8 @@ class NVCCPlugin(Magics):
 
         args = ["hipcc"]
         args.extend(compiler_args.split())
-        args.append("-I" + shared_dirpath + "," + group_dirpath)
+        args.append("-I" + shared_dirpath)
+        args.append("-I" + group_dirpath)
         args.extend(source_files)
         args.extend(["-o", executable_fpath])
 
