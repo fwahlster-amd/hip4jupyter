@@ -3,12 +3,13 @@ requires = ["hatchling >= 1.13.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "nvcc4jupyter"
-description = "Jupyter notebook plugin to run CUDA C/C++ code"
+name = "hip4jupyter"
+description = "Jupyter notebook plugin to run HIP C/C++ code"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT License"}
 authors = [
+    { name = "Fabian Wahlster", email = "Fabian.Wahlster@amd.com" },
     { name = "Andrei Nechaev", email = "lyfaradey@yahoo.com" },
     { name = "Cosmin Stefan Ciocan", email = "ciocan.cosmin98@gmail.com" },
 ]
@@ -31,10 +32,10 @@ documentation = 'https://nvcc4jupyter.readthedocs.io/'
 repository = 'https://github.com/andreinechaev/nvcc4jupyter'
 
 [tool.hatch.version]
-path = "nvcc4jupyter/__init__.py"
+path = "hip4jupyter/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["nvcc4jupyter"]
+packages = ["hip4jupyter"]
 
 [project.optional-dependencies]
 testing = ["pytest>=7.4.3", "IPython>=8.19.0"]
@@ -69,7 +70,7 @@ exclude_lines = [
 
 [tool.isort]
 profile = "black"
-src_paths = ["nvcc4jupyter"] # tells isort where to find local modules to not consider them 3rd party libraries
+src_paths = ["hip4jupyter"] # tells isort where to find local modules to not consider them 3rd party libraries
 
 [tool.bandit]
 exclude_dirs = ["build","dist","tests","scripts"]
@@ -90,7 +91,7 @@ enable-unstable-feature = ["string_processing"]
 branch = true
 omit = [
     # cannot test installing dependencies on platforms such as kaggle
-    "nvcc4jupyter/setup_env.py",
+    "hip4jupyter/setup_env.py",
 ]
 
 [tool.pyright]

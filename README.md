@@ -1,4 +1,4 @@
-# nvcc4jupyter: CUDA C++ plugin for Jupyter Notebook
+# hip4jupyter: HIP C++ plugin for Jupyter Notebook
 
 | | |
 | --- | --- |
@@ -24,13 +24,10 @@
 [pypi-latest-version]: https://img.shields.io/pypi/v/nvcc4jupyter.svg
 [pypi-downloads]: https://img.shields.io/pypi/dm/nvcc4jupyter.svg?label=PyPI%20downloads
 
-**nvcc4jupyter** is a Jupyter Notebook plugin that provides cell and line
+**hip4jupyter** is a Jupyter Notebook plugin that provides cell and line
 [magics](https://ipython.readthedocs.io/en/stable/interactive/magics.html)
 to allow running CUDA C++ code from a notebook. This is especially
 useful when combined with a hosted service such a Google's
-[Colab](https://colab.research.google.com/) which provide CUDA capable GPUs
-and you can start learning CUDA C++ without having to install anything or even
-to own a GPU yourself.
 
 ## Table of Contents
 
@@ -54,14 +51,14 @@ The installer for the latest released version is available at the [Python
 Package Index (PyPI)](https://pypi.org/project/nvcc4jupyter).
 
 ```sh
-pip install nvcc4jupyter
+pip install hip4jupyter
 ```
 
 ## Usage
 
 First, load the extension to enable the magic commands:
 ```
-%load_ext nvcc4jupyter
+%load_ext hip4jupyter
 ```
 
 Running a quick CUDA Hello World program:
