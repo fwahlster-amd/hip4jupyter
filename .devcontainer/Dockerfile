@@ -17,7 +17,8 @@ RUN apt install -y \
     git \
     language-pack-en \
     make \
-    python3-venv
+    python3-venv \
+    openssh-client
 #    gcc \
 
 # we create the virtualenv here so that the devcontainer.json setting
