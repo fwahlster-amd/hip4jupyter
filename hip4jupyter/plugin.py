@@ -80,12 +80,14 @@ class NVCCPlugin(Magics):
         _, ext = os.path.splitext(source_name)
         if ext not in (".cu", ".h", ".hip"):
             raise ValueError(
-                f'Given source name "{source_name}" must end in ".h", ".hip" or ".cu".'
+                f'Given source name "{source_name}" must end in ".h", ".hip"'
+                ' or ".cu".'
             )
         group_dirpath = os.path.join(self.workdir, group_name)
         os.makedirs(group_dirpath, exist_ok=True)
         source_fpath = os.path.join(group_dirpath, source_name)
         with open(source_fpath, "w", encoding="utf-8") as f:
+            print(f'Saving source "{source_fpath}"')
             f.write(source_code)
 
     def _delete_group(self, group_name: str) -> None:
@@ -124,8 +126,11 @@ class NVCCPlugin(Magics):
         """
         shared_dirpath = os.path.join(self.workdir, SHARED_GROUP_NAME)
         group_dirpath = os.path.join(self.workdir, group_name)
+
         if not os.path.exists(group_dirpath):
             raise RuntimeError(f'Group "{group_name}" does not exist.')
+
+        print(f"Group path: {group_dirpath}")
 
         source_files = list(glob.glob(os.path.join(group_dirpath, "*.cu")))
         source_files.extend(
@@ -149,6 +154,8 @@ class NVCCPlugin(Magics):
         args.append("-I" + shared_dirpath + "," + group_dirpath)
         args.extend(source_files)
         args.extend(["-o", executable_fpath])
+
+        print(args)
 
         subprocess.check_output(args, stderr=subprocess.STDOUT)
 
@@ -288,7 +295,7 @@ class NVCCPlugin(Magics):
             return None
 
     @cell_magic
-    def cuda(self, line: str, cell: str) -> None: # TODO: rename tho HIP
+    def cuda(self, line: str, cell: str) -> None:  # TODO: rename tho HIP
         """Compile and run the CUDA code in the cell.
 
         Args:

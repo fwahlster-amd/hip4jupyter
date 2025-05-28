@@ -27,4 +27,5 @@ RUN apt install -y \
 RUN python3 -m venv ${VENV_PATH}
 RUN echo "source ${VENV_ACTIVATE}" >> ~/.bashrc
 
+#RUN pip install -e .[dev]
 RUN echo "hipconfig" >> ~/.bashrc
