@@ -1,5 +1,5 @@
 """
-nvcc4jupyter: CUDA C++ plugin for Jupyter Notebook
+hip4jupyter: HIP C++ plugin for Jupyter Notebook
 """
 
 import argparse
@@ -25,7 +25,7 @@ from .parsers import (
 from .path_utils import CUDA_SEARCH_PATHS, find_executable
 from .setup_env import setup_environment
 
-DEFAULT_EXEC_FNAME = "cuda_exec.out"
+DEFAULT_EXEC_FNAME = "hip_exec.out"
 SHARED_GROUP_NAME = "shared"
 
 
@@ -38,7 +38,7 @@ def print_out(out: str):
 @magics_class
 class NVCCPlugin(Magics):
     """
-    CUDA C++ plugin for Jupyter Notebook
+    HIP C++ plugin for Jupyter Notebook
     """
 
     def __init__(self, shell: InteractiveShell):
@@ -68,8 +68,8 @@ class NVCCPlugin(Magics):
         any group.
 
         Args:
-            source_name: The name of the source file. Must end in ".cu" or
-                ".h".
+            source_name: The name of the source file. Must end in ".cu", ".hip"
+            or ".h".
             source_code: The source code to be written to the source file.
             group_name: The name of the group directory where the file will be
                 saved.
@@ -78,9 +78,9 @@ class NVCCPlugin(Magics):
             ValueError: If the source name does not have a proper extension.
         """
         _, ext = os.path.splitext(source_name)
-        if ext not in (".cu", ".h"):
+        if ext not in (".cu", ".h", ".hip"):
             raise ValueError(
-                f'Given source name "{source_name}" must end in ".h" or ".cu".'
+                f'Given source name "{source_name}" must end in ".h", ".hip" or ".cu".'
             )
         group_dirpath = os.path.join(self.workdir, group_name)
         os.makedirs(group_dirpath, exist_ok=True)
@@ -112,8 +112,8 @@ class NVCCPlugin(Magics):
         Args:
             group_name: The name of the source file group to be compiled.
             executable_fname: The output executable file name. Defaults to
-                "cuda_exec.out".
-            compiler_args: The optional "nvcc" compiler arguments.
+                "hip_exec.out".
+            compiler_args: The optional "hipcc" compiler arguments.
 
         Raises:
             RuntimeError: If the group does not exist or if does not have any
@@ -128,6 +128,9 @@ class NVCCPlugin(Magics):
             raise RuntimeError(f'Group "{group_name}" does not exist.')
 
         source_files = list(glob.glob(os.path.join(group_dirpath, "*.cu")))
+        source_files.extend(
+            list(glob.glob(os.path.join(group_dirpath, "*.hip")))
+        )
         if len(source_files) == 0:
             raise RuntimeError(
                 f'Group "{group_name}" does not have any source files.'
@@ -135,14 +138,17 @@ class NVCCPlugin(Magics):
         source_files.extend(
             list(glob.glob(os.path.join(shared_dirpath, "*.cu")))
         )
+        source_files.extend(
+            list(glob.glob(os.path.join(shared_dirpath, "*.hip")))
+        )
 
         executable_fpath = os.path.join(group_dirpath, executable_fname)
 
-        args = ["nvcc"]
+        args = ["hipcc"]
         args.extend(compiler_args.split())
         args.append("-I" + shared_dirpath + "," + group_dirpath)
         args.extend(source_files)
-        args.extend(["-o", executable_fpath, "-Wno-deprecated-gpu-targets"])
+        args.extend(["-o", executable_fpath])
 
         subprocess.check_output(args, stderr=subprocess.STDOUT)
 
@@ -187,12 +193,12 @@ class NVCCPlugin(Magics):
         profiler_args: str = "",
     ) -> str:
         """
-        Runs a CUDA executable.
+        Runs a HIP executable.
 
         Args:
             exec_fpath: The file path of the executable.
             timeit: If True, returns the result of the "timeit" magic instead
-                of the standard output of the CUDA process. Defaults to False.
+                of the standard output of the HIP process. Defaults to False.
             profile: If True, the executable is profiled with NVIDIA Nsight
                 Compute or NVIDIA Nsight Systems and the profiling output is
                 added to stdout. Defaults to False.
@@ -202,7 +208,7 @@ class NVCCPlugin(Magics):
                 to an empty string.
 
         Returns:
-            The standard output of the CUDA process or the "timeit" magic
+            The standard output of the HIP process or the "timeit" magic
             output.
         """
         if timeit:
@@ -282,7 +288,7 @@ class NVCCPlugin(Magics):
             return None
 
     @cell_magic
-    def cuda(self, line: str, cell: str) -> None:
+    def cuda(self, line: str, cell: str) -> None: # TODO: rename tho HIP
         """Compile and run the CUDA code in the cell.
 
         Args:
