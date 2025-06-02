@@ -1,23 +1,36 @@
 {
-    "name": "Python Environment",
+    "name": "hip4jupyter",
     "build": {
         "dockerfile": "Dockerfile",
         "context": ".."
     },
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "runArgs": [
+        "--name=fwahlste-hip4jupyter",
+        "--device=/dev/kfd",
+        "--device=/dev/dri",
+        "--security-opt",
+        "seccomp=unconfined",
+        "--group-add",
+        "video",
+        "--ipc=host",
+        "--cap-add=SYS_PTRACE" // https://github.com/Microsoft/MIEngine/wiki/Troubleshoot-attaching-to-processes-using-GDB
+    ],
     // "postCreateCommand": "bash .devcontainer/post_create.sh",
     "customizations": {
         "vscode": {
             "extensions": [
                 "editorconfig.editorconfig",
                 "ms-azuretools.vscode-docker",
-                "ms-python.python",
-                "ms-python.vscode-pylance",
-                "ms-python.pylint",
-                "ms-python.isort",
-                "ms-python.flake8",
-                "ms-python.black-formatter",
-                "ryanluker.vscode-coverage-gutters",
-                "njpwerner.autodocstring"
+                "ms-python.python"
+                //"ms-python.vscode-pylance",
+                //"ms-python.pylint",
+                //"ms-python.isort",
+                //"ms-python.flake8",
+                //"ms-python.black-formatter",
+                //"ryanluker.vscode-coverage-gutters",
+                //"njpwerner.autodocstring"
             ],
             "settings": {
                 "python.defaultInterpreterPath": "/opt/dev-venv/bin/python",
