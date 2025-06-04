@@ -3,7 +3,13 @@
     "build": {
         "dockerfile": "Dockerfile",
         "context": ".."
+        // "args": {
+        //     "REMOTE_USER": "${localEnv:USER}",
+        //     "REMOTE_UID": "${localEnv:REMOTE_UID:1000}",
+        //     "REMOTE_GID": "${localEnv:REMOTE_GID:1000}"
+        // }
     },
+    "remoteUser": "${localEnv:USER}",
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
     "runArgs": [
