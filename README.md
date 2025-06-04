@@ -61,7 +61,7 @@ First, load the extension to enable the magic commands:
 %load_ext hip4jupyter
 ```
 
-Running a quick CUDA Hello World program:
+Running a quick HIP Hello World program:
 ```c++
 %%cuda
 #include <stdio.h>
@@ -72,7 +72,7 @@ __global__ void hello(){
 
 int main(){
     hello<<<2, 2>>>();
-    cudaDeviceSynchronize();
+    hipDeviceSynchronize();
 }
 ```
 
@@ -86,8 +86,14 @@ The official documentation is hosted on [readthedocs](https://nvcc4jupyter.readt
 
 ## Contributing
 
-The recommended setup for development is using the devcontainer in GitHub
-Codespaces or locally in VSCode.
+Setup jupyter notebook output stripping:
+```bash
+git config filter.strip-notebook-output.clean 'jupyter nbconvert --ClearOutputPreprocessor.enabled=True --to=notebook --stdin --stdout --log-level=ERROR' 
+```
+
+when adding new notebook locations, create a new .gitattributes files with ```*.ipynb filter=strip-notebook-output``` in the same directory.
+
+The recommended setup for development is using the devcontainer.
 
 If not using the devcontainer you need to install the package with the
 development dependencies and install the pre-commit hook before commiting any
